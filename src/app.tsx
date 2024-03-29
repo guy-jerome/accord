@@ -1,33 +1,46 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import React, { useState, FC } from "react";
+import TodoItem from "./components/TodoItem";
 
-export function App() {
-  const [count, setCount] = useState(0)
+interface Todo {
+  id: number;
+  text: string;
+}
+
+const Todo: FC = () => {
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const handleAddTodo = () => {
+    if (todo.trim() !== "") {
+      const newTodo: Todo = { id: todos.length + 1, text: todo };
+      setTodos([...todos, newTodo]);
+      setTodo("");
+    }
+  };
+
+  const handleDeleteTodo = (id: number) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  };
 
   return (
-    <>
+    <div>
+      <h2>Todo App</h2>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
+        <input
+          type="text"
+          value={todo}
+          onChange={(e: any) => setTodo(e.target.value)}
+        />
+        <button onClick={handleAddTodo}>Add</button>
       </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
-  )
-}
+      <ul>
+        {todos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} onDelete={handleDeleteTodo} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Todo;
