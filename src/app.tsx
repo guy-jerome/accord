@@ -1,8 +1,9 @@
-import React, { useState, FC } from "react";
+import { useState, FC } from "react";
 import TodoItem from "./components/TodoItem";
+import { v4 as uuidv4 } from "uuid";
 
 interface Todo {
-  id: number;
+  id: string;
   text: string;
 }
 
@@ -12,13 +13,13 @@ const Todo: FC = () => {
 
   const handleAddTodo = () => {
     if (todo.trim() !== "") {
-      const newTodo: Todo = { id: todos.length + 1, text: todo };
+      const newTodo: Todo = { id: uuidv4(), text: todo };
       setTodos([...todos, newTodo]);
       setTodo("");
     }
   };
 
-  const handleDeleteTodo = (id: number) => {
+  const handleDeleteTodo = (id: string) => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
   };

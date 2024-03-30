@@ -1,19 +1,19 @@
-import React from "react";
+import { FC } from "react";
 
 interface Todo {
-  id: number;
+  id: string;
   text: string;
 }
 
 interface TodoItemProps {
   todo: Todo;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
+const TodoItem: FC<TodoItemProps> = ({ key, todo, onDelete }) => {
   return (
-    <li key={todo.id}>
-      {todo.text}
+    <li key={key}>
+      <p>{todo.text}</p>
       <button onClick={() => onDelete(todo.id)}>Delete</button>
     </li>
   );
